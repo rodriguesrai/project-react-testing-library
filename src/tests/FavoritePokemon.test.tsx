@@ -29,12 +29,8 @@ describe('Testa a página de pokemons favoritos', () => {
     });
     await userEvent.click(btnFavoritePokemon);
 
-    // Verifica se o título da página de favoritos está correto
-    // const pageTitle = ////////////////
-    // expect(pageTitle).toBeInTheDocument();
-
     // Verifica se os pokémons favoritos estão sendo exibidos
-    const pokemonOverview = screen.getByTestId('pokemon-overview');
-    expect(pokemonOverview).toBeInTheDocument();
+    const imgElements = screen.queryAllByRole('img');
+    expect(imgElements).toHaveLength(2);
   });
 });
