@@ -11,7 +11,7 @@ describe('Testa a página de pokemons favoritos', () => {
     expect(takeTitle).toBeInTheDocument();
   });
 
-  it('Testa se o pokemon favoritado está na página de favoritos', async () => {
+  it('Verifica se o pokemon favoritado está na página de favoritos', async () => {
     renderWithRouter(<App />, { route: '/' });
 
     const detailsBtn = screen.getByRole('link', {
@@ -29,8 +29,31 @@ describe('Testa a página de pokemons favoritos', () => {
     });
     await userEvent.click(btnFavoritePokemon);
 
-    // Verifica se os pokémons favoritos estão sendo exibidos
     const imgElements = screen.queryAllByRole('img');
     expect(imgElements).toHaveLength(2);
+  });
+  it('Verifica se o pokemon é removido dos favoritos', async () => {
+    renderWithRouter(<App />);
+
+    const detailsBtn = screen.getByRole('link', {
+      name: /more details/i,
+    });
+    await userEvent.click(detailsBtn);
+
+    const btnFavorite = screen.getByRole('checkbox', {
+      name: /pokémon favoritado/i,
+    });
+    await userEvent.click(btnFavorite);
+
+    const btnFavoritePokemon = screen.getByRole('link', {
+      name: /favorite pokémon/i,
+    });
+    await userEvent.click(btnFavoritePokemon);
+    await userEvent.click(detailsBtn);
+    await userEvent.click(btnFavoritePokemon);
+    await userEvent.click(btnFavorite);
+
+    const noFavoriteParah = screen.getByText(/no favorite pokémon found/i);
+    expect(noFavoriteParah).toBeInTheDocument();
   });
 });
